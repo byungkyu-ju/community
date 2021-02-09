@@ -39,4 +39,10 @@ public class Member {
 	public boolean isEqualPassword(String passwordConfirm) {
 		return this.password.equals(passwordConfirm);
 	}
+
+	public void checkPassword(String password) {
+		if(!this.password.equals(password)){
+			throw new IllegalArgumentException("비밀번호 오류");
+		}
+	}
 }

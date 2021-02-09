@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +44,7 @@ class MemberServiceTest {
 			.nickName(NICK_NAME)
 			.build();
 
-		when(memberRepository.findByEmail(request.getEmail())).thenReturn(null);
+		when(memberRepository.findByEmail(request.getEmail())).thenReturn(Optional.empty());
 		when(memberRepository.save(any())).thenReturn(new Member(EMAIL, PASSWORD, NICK_NAME));
 		// when
 		Member savedMember = memberService.createMember(request);
