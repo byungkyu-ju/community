@@ -10,12 +10,12 @@ import org.springframework.test.annotation.DirtiesContext;
 import io.restassured.RestAssured;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 public class AcceptanceTest {
 	@LocalServerPort
 	int port;
 
 	@BeforeEach
-	@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 	public void setUp() {
 		RestAssured.port = port;
 	}

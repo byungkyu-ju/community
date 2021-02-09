@@ -1,5 +1,7 @@
 package me.bk.community.member.application;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,13 +44,13 @@ public class MemberService {
 	}
 
 	private void validateCreateMember(MemberCreateRequest memberCreateRequest) {
-		Member findMember = findByEmail(memberCreateRequest.getEmail());
-		if (findMember != null) {
+		Optional<Member> findMember = memberRepository.findByEmail(memberCreateRequest.getEmail());
+		if (findMember.isPresent()) {
 			throw new IllegalArgumentException("이메일 중복");
 		}
 	}
 
-	private Member findByEmail(String email) {
-		return memberRepository.findByEmail(email);
+	public Member findByEmail(String email) {
+		return memberRepository.findByEmail(email).orElseThrow(IllegalArgumentException::new);
 	}
 }

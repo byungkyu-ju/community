@@ -35,7 +35,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
 	}
 
-	private ExtractableResponse<Response> 회원_생성(String email, String password,String passwordConfirm, String nickName) {
+	public static ExtractableResponse<Response> 회원_생성(String email, String password,String passwordConfirm, String nickName) {
 		MemberCreateRequest request = MemberCreateRequest.builder()
 			.email(email)
 			.password(password)
