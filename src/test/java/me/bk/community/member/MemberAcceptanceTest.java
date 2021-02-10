@@ -104,7 +104,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 		assertThat(memberResponse.getId()).isNotNull();
 	}
 
-	private ExtractableResponse<Response> 자신의_정보를_조회한다(LoginTokenResponse loginTokenResponse) {
+	public static ExtractableResponse<Response> 자신의_정보를_조회한다(LoginTokenResponse loginTokenResponse) {
 		return RestAssured
 			.given().log().all()
 			.accept(MediaType.APPLICATION_JSON_VALUE)
