@@ -8,6 +8,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
+import me.bk.community.auth.infra.JwtTokenProvider;
+import me.bk.community.config.security.user.UserDetailsServiceImpl;
 
 /**
  * @author : byungkyu
@@ -18,6 +20,9 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+	private final JwtTokenProvider jwtTokenProvider;
+	private final UserDetailsServiceImpl userDetailsServiceImpl;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -30,6 +35,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-		http.addFilterBefore(new JwtAuthTokenFilter(authenticationManager()), BasicAuthenticationFilter.class);
+		http.addFilterBefore(new JwtAuthTokenFilter(authenticationManager(), jwtTokenProvider, userDetailsServiceImpl), BasicAuthenticationFilter.class);
 	}
 }

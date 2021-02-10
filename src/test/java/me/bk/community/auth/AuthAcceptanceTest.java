@@ -73,7 +73,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
 		assertThat(loginTokenResponse.getAccessToken()).isNotEmpty();
 	}
 
-	private ExtractableResponse<Response> 로그인_요청(String email, String password) {
+	public static ExtractableResponse<Response> 로그인_요청(String email, String password) {
 		LoginTokenRequest loginTokenRequest = new LoginTokenRequest(email, password);
 		return RestAssured
 			.given().log().all()
