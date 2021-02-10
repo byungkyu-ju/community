@@ -1,6 +1,7 @@
 package me.bk.community.member.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.bk.community.member.domain.Member;
@@ -13,6 +14,7 @@ import me.bk.community.member.domain.Member;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class UpdateMemberRequest {
 	private String nickName;
 
