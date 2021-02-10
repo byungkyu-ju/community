@@ -2,8 +2,6 @@ package me.bk.community.auth.infra;
 
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -40,15 +38,10 @@ public class JwtTokenProvider {
 	public boolean validateToken(String token) {
 		try {
 			Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-
 			return !claims.getBody().getExpiration().before(new Date());
 		} catch (JwtException | IllegalArgumentException e) {
 			return false;
 		}
-	}
-
-	public String resolveToken(HttpServletRequest request) {
-		return request.getHeader("X-AUTH-TOKEN");
 	}
 
 }

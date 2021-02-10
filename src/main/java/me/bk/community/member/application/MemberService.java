@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import me.bk.community.member.domain.Member;
 import me.bk.community.member.dto.MemberCreateRequest;
+import me.bk.community.member.dto.MemberResponse;
+import me.bk.community.member.dto.UpdateMemberRequest;
 import me.bk.community.member.repository.MemberRepository;
 
 /**
@@ -52,5 +54,24 @@ public class MemberService {
 
 	public Member findByEmail(String email) {
 		return memberRepository.findByEmail(email).orElseThrow(IllegalArgumentException::new);
+	}
+
+	public MemberResponse findMember(Long id) {
+		Member member = findMemberById(id);
+		return MemberResponse.of(member);
+	}
+
+	private Member findMemberById(Long id){
+		return memberRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+	}
+
+	public void updateMember(Long id, UpdateMemberRequest request) {
+		Member member = findMemberById(id);
+		member.update(request.toMember());
+	}
+
+	public void deleteMember(Long id) {
+		Member member = findMemberById(id);
+		memberRepository.delete(member);
 	}
 }

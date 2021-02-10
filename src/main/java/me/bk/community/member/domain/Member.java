@@ -1,9 +1,15 @@
 package me.bk.community.member.domain;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -36,6 +42,10 @@ public class Member {
 		this.nickName = nickName;
 	}
 
+	public Member(String nickName) {
+		this.nickName = nickName;
+	}
+
 	public boolean isEqualPassword(String passwordConfirm) {
 		return this.password.equals(passwordConfirm);
 	}
@@ -44,5 +54,13 @@ public class Member {
 		if(!this.password.equals(password)){
 			throw new IllegalArgumentException("비밀번호 오류");
 		}
+	}
+
+	public List<GrantedAuthority> getAuthorities() {
+		return Arrays.asList(new SimpleGrantedAuthority(Role.ROLE_MEMBER.name()));
+	}
+
+	public void update(Member member) {
+		this.nickName = member.nickName;
 	}
 }
