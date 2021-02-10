@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,6 +54,24 @@ public class MemberController {
 	@DeleteMapping("/me")
 	public ResponseEntity<MemberResponse> deleteMemberOfMine(@AuthenticationPrincipal LoginMember loginMember) {
 		memberService.deleteMember(loginMember.getId());
+		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity findMember(@PathVariable Long id) {
+		MemberResponse response = memberService.findMember(id);
+		return ResponseEntity.ok().body(response);
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity updateMemberOfMine(@PathVariable Long id, UpdateMemberRequest request) {
+		memberService.updateMember(id, request);
+		return ResponseEntity.ok().build();
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<MemberResponse> deleteMember(@PathVariable Long id) {
+		memberService.deleteMember(id);
 		return ResponseEntity.noContent().build();
 	}
 }

@@ -68,6 +68,66 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 		회원정보가_삭제된다(leaveMemberResponse);
 	}
 
+	@DisplayName("회원의 정보를 관리할 수 있다.")
+	@Test
+	void 회원의_정보를_관리할_수있다(){
+		// given
+		ExtractableResponse<Response> createResponse = 회원_생성(EMAIL, PASSWORD, PASSWORD_CONFIRM, NICK_NAME);
+		회원이_등록됨(createResponse);
+
+		// when
+		ExtractableResponse<Response> findResponse = 회원의_정보를_조회한다(createResponse);
+
+		// then
+		회원정보가_조회된다(findResponse);
+
+		// when
+		UpdateMemberRequest updateRequest = new UpdateMemberRequest("updateNickName");
+		ExtractableResponse<Response> updateResponse = 회원의_정보를_수정한다(createResponse, updateRequest);
+
+		// then
+		회원정보가_수정된다(updateResponse);
+
+		// when
+		ExtractableResponse<Response> leaveMemberResponse = 회원을_탈퇴시킨다(createResponse);
+
+		// then
+		회원정보가_삭제된다(leaveMemberResponse);
+	}
+
+	private ExtractableResponse<Response> 회원을_탈퇴시킨다(ExtractableResponse<Response> response) {
+		String uri = response.header("Location");
+		return RestAssured
+			.given().log().all()
+			.when().delete(uri)
+			.then().log().all()
+			.extract();
+	}
+
+	private ExtractableResponse<Response> 회원의_정보를_수정한다(ExtractableResponse<Response> response, UpdateMemberRequest updateRequest) {
+		String uri = response.header("Location");
+
+		return RestAssured
+			.given().log().all()
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.body(updateRequest)
+			.when().put(uri)
+			.then().log().all()
+			.extract();
+	}
+
+	private ExtractableResponse<Response> 회원의_정보를_조회한다(ExtractableResponse<Response> response) {
+		String uri = response.header("Location");
+
+		return RestAssured
+			.given().log().all()
+			.accept(MediaType.APPLICATION_JSON_VALUE)
+			.when().get(uri)
+			.then().log().all()
+			.extract();
+	}
+
+
 	private void 회원정보가_삭제된다(ExtractableResponse<Response> leaveMemberResponse) {
 		assertThat(leaveMemberResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
 	}
