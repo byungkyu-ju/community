@@ -59,6 +59,24 @@ public class AuthAcceptanceTest extends AcceptanceTest {
 		로그인실패_비밀번호_불일치(loginResponse);
 	}
 
+
+	@DisplayName("변조된 토큰은 로그인을 할 수 없다")
+	@Test
+	void 변조된_토큰은_로그인을_할_수_없다(){
+		// given
+		LoginTokenResponse invalidToken = new LoginTokenResponse("invalidToken");
+
+		// when
+		ExtractableResponse<Response> findResponse = 자신의_정보를_조회한다(invalidToken);
+
+		// then
+		로그인실패_유효하지_않은_토큰(findResponse);
+	}
+
+	private void 로그인실패_유효하지_않은_토큰(ExtractableResponse<Response> response) {
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
+	}
+
 	private void 로그인실패_비밀번호_불일치(ExtractableResponse<Response> response) {
 		assertThat(response.statusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
 	}
